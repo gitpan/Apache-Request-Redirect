@@ -17,13 +17,34 @@ use HTTP::Headers;
 use LWP::UserAgent;
 use URI;
 
-$Apache::Request::Redirect::VERSION = '0.04';
+$Apache::Request::Redirect::VERSION = '0.05';
 
 $Apache::Request::Redirect::LOG = 0;
 
 $LOG_REQUEST			= 0b0001;
 $LOG_QUERYSTRING		= 0b0010;
 $LOG_RESPONSE			= 0b0100;
+
+
+my $MOD_PERL = 0;
+# Turn on special checking for Doug MacEachern's modperl
+if (exists $ENV{MOD_PERL}) {
+  eval "require mod_perl";
+  # mod_perl handlers may run system() on scripts using CGI.pm;
+  # Make sure so we don't get fooled by inherited $ENV{MOD_PERL}
+  if (defined $mod_perl::VERSION) {
+    if ($mod_perl::VERSION >= 1.99) {
+      $MOD_PERL = 2;
+      require Apache::RequestRec;
+      require Apache::RequestUtil;
+      require APR::Pool;
+    } else {
+      $MOD_PERL = 1;
+      require Apache;
+    }
+  }
+}
+
 
 my %fields = (
 				apachereq		=> '',
@@ -36,9 +57,7 @@ my %fields = (
 sub new {
 	my ($proto,%options) = @_;
 	my $class = ref($proto) || $proto;
-	my $self = {
-				%fields
-			};
+	my $self = { };
 	while (my ($key,$value) = each(%options)) {
       if (exists($fields{$key})) {
           $self->{$key} = $value;
@@ -46,12 +65,26 @@ sub new {
           die $class . "::new: invalid option '$key'\n";
       }
 	}
-	foreach (keys %fields) {
-		die $class . "::new: omitted required option '$_'\n"
-			if (!defined $self->{$_});
-	}
+	#foreach (keys %fields) {
+	#	die $class . "::new: omitted required option '$_'\n"
+	#		if (!defined $self->{$_});
+	#}
 		
 	bless $self, $class;
+	
+	# attivo apachereq direttamente da Apache
+	if ($MOD_PERL) {
+		$self->apachereq(Apache->request) unless $self->apachereq;
+		my $apachereq = $self->apachereq;
+		if ($MOD_PERL == 1) {
+			#$apacheref->register_cleanup(\&CGI::_reset_globals);
+		} else {
+      		# XXX: once we have the new API
+      		# will do a real PerlOptions -SetupEnv check
+      		#$apacheref->subprocess_env unless exists $ENV{REQUEST_METHOD};
+      		#$apacheref->pool->cleanup_register(\&CGI::_reset_globals);
+		}
+	}
 
 	if ($Apache::Request::Redirect::LOG != 0) {
 		eval {

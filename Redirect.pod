@@ -62,12 +62,11 @@ in the pseudoframe structure.
 
 =head2 CONSTRUCTORS
 
-The C<new> constructor return an istance of C<Apache::Request::Redirect> object. It has four
+The C<new> constructor return an istance of C<Apache::Request::Redirect> object. It has three
 optional parameters which you can set here or directly using relative methods before 
 calling L<"item_redirect"|redirect> method.
 
   $redirect = new Apache::Request::Redirect(
-                                             [apachereq => $r],
                                              [args      => $args]
                                              [host      => $host],
                                              [url       => $url],
@@ -77,10 +76,6 @@ calling L<"item_redirect"|redirect> method.
 
 =item B<PARAMETERS>
 
-
-=item apachereq
-
-It's an Apache or Apache::Request object (see also the L<"item_apachereq"|apachereq> method)
 
 =item args
 
@@ -100,7 +95,6 @@ L<"item_url"|url> method.
 =item B<EXAMPLE>
 
   $redirect = new Apache::Request::Redirect(
-                                             apachereq => $r,
                                              args      => {$r->args},
                                              host      => "php_engine.yourdomain.com,
                                              url       => $r->uri->path
@@ -125,6 +119,8 @@ to
 =item apachereq
 
 This module runs under mod_perl. This method set/get a reference to Apache object.
+It's not required to set a reference to Apache object because module automatically
+detect it.
 
 =item args
 
@@ -224,6 +220,6 @@ L<HTTP::Request> , L<HTTP::Response>, L<Apache::Request>, L<HTML::Template>,
 L<HTML::Template::Extension::HEAD_BODY> 
 
 To see some web sites that use this package take a look to http://www.micso.fr 
-and http://www.micso.co
+and http://www.micso.com
 
 =cut

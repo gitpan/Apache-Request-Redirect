@@ -26,7 +26,7 @@ This module requires these other modules and libraries:
 COPYRIGHT AND LICENCE
 
 Apache::Request::Redirect - An Apache mod_perl module to redirect url request
-Copyright (C) 2003 Emiliano Bruni (info/at/ebruni_dot_it)
+Copyright (C) 2003-2004 Emiliano Bruni (info/at/ebruni_dot_it)
 
 This module is free software; you can redistribute it and/or modify it
 under the terms of either:
