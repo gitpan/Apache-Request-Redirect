@@ -17,7 +17,7 @@ use HTTP::Headers;
 use LWP::UserAgent;
 use URI;
 
-$Apache::Request::Redirect::VERSION = '0.01';
+$Apache::Request::Redirect::VERSION = '0.02';
 
 $Apache::Request::Redirect::LOG = 0;
 

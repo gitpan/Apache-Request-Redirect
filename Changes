@@ -1,5 +1,9 @@
 Revision history for Perl extension Apache::Request::Redirect.
 
+00.02  (2003-07-23)
+===================
+- Lost pod documentation in the MANIFEST file and so in the distribution file too.
+
 00.01  (2003-07-22)
 ===================
 - original version
