@@ -1,5 +1,11 @@
 Revision history for Perl extension Apache::Request::Redirect.
 
+00.03  (2003-07-28)
+===================
+- Add a new boolean method/parameter use_http10. If this parameter is set to 1 
+  remote page is request using HTTP/1.0 protocol indeed of HTTP/1.1 which is
+  the default.
+
 00.02  (2003-07-23)
 ===================
 - Lost pod documentation in the MANIFEST file and so in the distribution file too.

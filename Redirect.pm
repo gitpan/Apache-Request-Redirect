@@ -17,7 +17,7 @@ use HTTP::Headers;
 use LWP::UserAgent;
 use URI;
 
-$Apache::Request::Redirect::VERSION = '0.02';
+$Apache::Request::Redirect::VERSION = '0.03';
 
 $Apache::Request::Redirect::LOG = 0;
 
@@ -27,9 +27,10 @@ $LOG_RESPONSE			= 0b0100;
 
 my %fields = (
 				apachereq		=> '',
-				host	=> 'localhost',
-				url		=> '/',			
-				args	=> {}
+				host			=> 'localhost',
+				url				=> '/',			
+				args			=> {},
+				use_http10		=> 0,
 );
 
 sub new {
@@ -131,6 +132,10 @@ sub _send_request() {
 	my $self			= shift;
 	my $request			= shift;
 
+	if ($self->{use_http10}) {
+		require LWP::Protocol::http10;
+		LWP::Protocol::implementor('http', 'LWP::Protocol::http10');
+	}
 	my $ua 				= new LWP::UserAgent;
 	my $response		= $ua->send_request($request);
 	return $response;
@@ -196,8 +201,8 @@ sub apachereq {
 }
 
 sub host { my $s = shift; if (@_) { $s->{host} = shift; } return $s->{host}; }
-
 sub url { my $s = shift; if (@_) { $s->{url} = shift; } return $s->{url}; }
+sub use_http10 { my $s = shift; if (@_) { $s->{use_http10} = shift; } return $s->{use_http10}; }
 
 sub args { 
 	my $s = shift; 
