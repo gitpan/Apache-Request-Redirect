@@ -1,5 +1,14 @@
 Revision history for Perl extension Apache::Request::Redirect.
 
+00.04  (2003-09-03)
+===================
+- In the previous version when request is of type POST all query string
+  parameters was put in the content body of the HTTP request also if some
+  of this parameters came from uri query string. This cause problems for
+  script that make difference between query string parameters and 
+  content POST parameters. Now if the request type is POST the redirect 
+  request have uri query string unchanged regarding the original request.
+
 00.03  (2003-07-28)
 ===================
 - Add a new boolean method/parameter use_http10. If this parameter is set to 1 

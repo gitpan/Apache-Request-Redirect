@@ -216,7 +216,7 @@ HTTP::Response, HTTP::Request, HTTP::Headers, LWP::UserAgent, URI, Log::SimpleFi
 
 =head1 AUTHOR
 
-Emiliano Bruni, E<lt>info@ebruni.itE<gt>
+Emiliano Bruni, E<lt>info/at/ebruni_dot_it<gt>
 
 =head1 SEE ALSO
 

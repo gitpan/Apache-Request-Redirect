@@ -17,7 +17,7 @@ use HTTP::Headers;
 use LWP::UserAgent;
 use URI;
 
-$Apache::Request::Redirect::VERSION = '0.03';
+$Apache::Request::Redirect::VERSION = '0.04';
 
 $Apache::Request::Redirect::LOG = 0;
 
@@ -110,9 +110,11 @@ sub _prepare_request() {
 	if ($self->{apachereq}->method eq 'POST') {
 		# costruisco il content
 		$content		= $self->_built_content();
-		# nel post la query string e nel content e non nell'url
+		# nel post la query string totale la metto nel
+		# content e non nell'url
 		$content		.= $uri->query;
-		$uri->query(undef);
+		# nell'url ci lasciamo la sola query_string originale (00.04)
+		$uri->query(scalar($self->{apachereq}->args));
 		# imposto la lunghezza del content nell'header
 		$headers->header('Content-Length' => length($content));
 	} else {
